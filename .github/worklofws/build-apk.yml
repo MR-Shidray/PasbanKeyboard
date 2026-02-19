@@ -3,7 +3,7 @@ name: Build APK
 on:
   workflow_dispatch:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "master" ]
 
 jobs:
   build:
@@ -30,6 +30,15 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
         with:
           gradle-version: "8.7"
+
+      - name: Debug - list project files
+        run: |
+          pwd
+          ls -la
+          echo "---- app ----"
+          ls -la app || true
+          echo "---- find build.gradle* and settings.gradle* ----"
+          find . -maxdepth 4 -type f \( -name "build.gradle*" -o -name "settings.gradle*" \) | sed 's|^\./||'
 
       - name: Build Debug APK
         run: |
